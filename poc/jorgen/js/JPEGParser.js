@@ -119,7 +119,8 @@ JPEGParser.prototype = {
 
 			s = s.substring( s.indexOf( '<' ) );
 
-			return dom.parseFromString( s, 'text/xml' );
+			var domDocument = dom.parseFromString( s, 'text/xml' );
+			return new XMPDocument(domDocument);
 		},
 
 		/**

@@ -56,7 +56,7 @@ XMPDocument.prototype = {
 		}
 
 		newy = this._document.createElement(name);
-		children.appendChild(newy);
+		this._document.children[0].children[0].appendChild(newy);
 		return newy; 
 	},
 
