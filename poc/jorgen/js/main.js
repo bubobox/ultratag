@@ -35,6 +35,7 @@
 		data = new Uint8Array( data );
 
 		var parser = new JPEGParser();
+
 		parser.on( 'xmp', function( data, start, length ) {
 			
 			// Set example
@@ -44,10 +45,16 @@
 				name: 'Jef',
 				age: 28
 			});
+
 			
 			// Get example 
 			//data.get('user')
 		});
+		parser.on( 'exif', function( data ) {
+			var i = 0;
+			for( i in data )
+				console.log( data[i]._id.toString(16), data[i].key, data[i].value() );
+		})
 
 		parser.parse( data );
 	};

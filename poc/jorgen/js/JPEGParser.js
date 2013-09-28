@@ -86,7 +86,11 @@ JPEGParser.prototype = {
 			 */
 
 			if( id == 'Exif' )
-				return this.trigger( 'exif', data, start, length );
+				return this.trigger( 'exif', this._parsers.exif( data, start, length ), {
+					data: data,
+					start: start,
+					length: length
+				});
 
 			if( id == 'http' )
 				return this.trigger( 'xmp', this._parsers.xmp( data, start, length ), {
@@ -132,7 +136,54 @@ JPEGParser.prototype = {
 		 * @return Object 		Key-value pairs of data
 		 */
 		exif: function( data, start, length ) {
+			var i = 6 + 2 + 2, // Exif\0\0 + MM + TIFF header
+				initial_byte = start+6, // Header start
+				first_data = ( data[start+i++] << 24 ) +
+					( data[start+i++] << 16 ) +
+					( data[start+i++] << 8 ) +
+					data[start+i++],
+				initial_data = initial_byte + first_data;
 
+				count = ( data[initial_data] << 8 ) + data[initial_data+1];
+
+				i = initial_data+2,
+				j = 0,
+				x = 0,
+				tag = {},
+				result = [];
+
+			for( j=0; j<count; j++ ) {
+				tmpstring = '';
+				tag = {
+					id: ( data[i++] << 8 ) + data[i++],
+					type: ( data[i++] << 8 ) + data[i++],
+					components: ( data[i++] << 24 ) +
+						( data[i++] << 16 ) +
+						( data[i++] << 8 ) +
+						data[i++],
+					valueOffset: ( data[i++] << 24 ) +
+						( data[i++] << 16 ) +
+						( data[i++] << 8 ) +
+						data[i++],
+					value: []
+				};
+
+				if( tag.type == 3 )
+					tag.components *= 2;
+
+				if( tag.type == 4 )
+					tag.components *= 4;
+
+				if( tag.type == 5 )
+					tag.components *= 8;
+
+				for( x=0; x<tag.components; x++ ) {
+					tag.value.push( data[initial_byte+tag.valueOffset+x]);
+				}
+				result.push( new EXIFTag( tag.id, tag.type, tag.value ) );
+			}
+
+			return result;
 		}
 	}
 
