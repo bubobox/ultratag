@@ -1,3 +1,4 @@
+
 (function() {
 	var zone = document.querySelector( '#dropzone' );
 
@@ -45,7 +46,7 @@
 			s = s.substring( s.indexOf( '<' ) );
 
 			dom = new DOMParser();
-			doc = dom.parseFromString( s );
+			doc = dom.parseFromString( s, 'text/xml' );
 			console.log( doc );
 		});
 
