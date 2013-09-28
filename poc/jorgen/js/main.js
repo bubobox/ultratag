@@ -129,3 +129,7 @@ JPEGParser.prototype = {
 	}
 
 };
+
+XMPDocument = function() {
+	
+}
