@@ -1,56 +1,88 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Hello world</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
-    	<input type="file" id="files" name="files[]" multiple />
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Hello world</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+	<body>
+		<input type="file" id="files" name="files[]" multiple />
 		<output id="list"></output>
 
 		<script>
+
+		//test = doc.children[0].children[0].children[0]
+		//test.attributes
+
 		  function handleFileSelect(evt) {
-		    var files = evt.target.files; // FileList object
+			var files = evt.target.files; // FileList object
 
-		    // files is a FileList of File objects. List some properties.
-		    var output = [];
-		    for (var i = 0, f; f = files[i]; i++) {
-		      output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-		                  f.size, ' bytes, last modified: ',
-		                  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-		                  '</li>');
-		    }
-		    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+			// files is a FileList of File objects. List some properties.
+			var output = [];
+			for (var i = 0, f; f = files[i]; i++) {
+			  output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+						  f.size, ' bytes, last modified: ',
+						  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+						  '</li>');
+			}
+			document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
 
 
-		    var file = files[0];
-		    var reader = new FileReader();
+			var file = files[0];
+			var reader = new FileReader();
 
-		    // If we use onloadend, we need to check the readyState.
-		    reader.onloadend = function(evt) {
-		      if (evt.target.readyState == FileReader.DONE) { // DONE == 2
-		        var data = evt.target.result;
-		        console.error(data);
-		        var start = data.indexOf('x:xmpmeta');
-		        var stop = data.indexOf('/x:xmpmeta');
+			// If we use onloadend, we need to check the readyState.
+			reader.onloadend = function(evt) {
+			  if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+				var data = evt.target.result;
+				//console.error(data);
+				/*var start = data.indexOf('<x:xmpmeta');
+				var stop = data.indexOf('</x:xmpmeta>') + 12;
+				var xmp = data.slice(start, stop);
+				console.error(xmp);
+				var parser = new DOMParser();
+				window.doc = parser.parseFromString(xmp, "application/xml");
+				window.attr = doc.children[0].children[0].children[0].attributes;*/
 
-		        console.error(data.slice(start, stop));
+				var XMP = extractXMP(data);
+				attr = XMP.children[0].children[0].children[0].attributes;
 
-		      }
-		    };
 
-		    var blob = file;
-		    reader.readAsBinaryString(blob);
+				var info = {};
+				for(var idx in attr) {
+					var item = attr[idx];
+					console.error(item.name.replace(item.prefix + ':', ''), item.nodeValue);
+				}
+
+				console.error(doc, attr);
+
+			  }
+			};
+
+			var blob = file;
+			reader.readAsBinaryString(blob);
 
 
 		  }
 
+		function extractXMP(data) {
+			var start = data.indexOf('<x:xmpmeta');
+			var stop = data.indexOf('</x:xmpmeta>') + 12;
+			var XMPString = data.slice(start, stop);
+			console.error(XMPString);
+			var parser = new DOMParser();
+			var XMP = parser.parseFromString(XMPString, "application/xml");
+
+
+
+			return XMP;
+		}
+
 
 		  document.getElementById('files').addEventListener('change', handleFileSelect, false);
 		</script>
-    </body>
+	</body>
 </html>
