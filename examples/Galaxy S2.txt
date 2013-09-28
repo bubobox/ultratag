@@ -1,14 +1,151 @@
-General
-Complete name                            : IMG_20130928_121257.jpg
-Format                                   : JPEG
-File size                                : 2.38 MiB
+EXIF — this group of metadata is encoded in 44,340 bytes (43.3k)
 
-Image
-Format                                   : JPEG
-Width                                    : 3 264 pixels
-Height                                   : 2 448 pixels
-Chroma subsampling                       : 4:2:2
-Bit depth                                : 8 bits
-Compression mode                         : Lossy
+Make
+Samsung
 
+Camera Model Name
+GT-I9100
 
+Software
+JDQ39
+
+Modify Date
+2013:09:28 12:12:58
+
+7 hours, 53 minutes, 13 seconds ago
+
+Y Cb Cr Positioning
+Centered
+
+Exposure Time
+1/33
+
+F Number
+2.65
+
+Exposure Program
+Aperture-priority AE
+
+ISO
+50
+
+Exif Version
+0220
+
+Date/Time Original
+2013:09:28 12:12:58
+
+7 hours, 53 minutes, 13 seconds ago
+
+Create Date
+2013:09:28 12:12:58
+
+7 hours, 53 minutes, 13 seconds ago
+
+Shutter Speed Value
+1/33
+
+Aperture Value
+2.65
+
+Brightness Value
+3.68
+
+Exposure Compensation
+0
+
+Max Aperture Value
+2.6
+
+Metering Mode
+Center-weighted average
+
+Flash
+Auto, Did not fire
+
+Focal Length
+4.0 mm
+
+User Comment
+User comments
+
+Color Space
+sRGB
+
+Exposure Mode
+Auto
+
+Image Size
+3,264 × 2,448
+
+White Balance
+Auto
+
+Scene Capture Type
+Standard
+
+Image Width
+320
+
+Image Height
+240
+
+Compression
+JPEG (old-style)
+
+Orientation
+Rotate 90 CW
+
+Resolution
+72 pixels/inch
+
+Thumbnail Length
+43,649
+
+File — basic information derived from the file.
+
+File Type
+JPEG
+
+MIME Type
+image/jpeg
+
+Exif Byte Order
+Little-endian (Intel, II)
+
+Encoding Process
+Baseline DCT, Huffman coding
+
+Bits Per Sample
+8
+
+Color Components
+3
+
+File Size
+2.4 MB
+
+Image Size
+3,264 × 2,448
+
+Y Cb Cr Sub Sampling
+YCbCr4:2:2 (2 1)
+
+Composite
+
+This block of data is computed based upon other items. Some of it may be wildly incorrect, especially if the image has been resized.
+
+Aperture
+2.65
+
+Shutter Speed
+1/33
+
+Thumbnail Image
+(43,649 bytes binary data)
+
+Focal Length
+4.0 mm
+
+Light Value
+8.9
