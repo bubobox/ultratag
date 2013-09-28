@@ -35,10 +35,9 @@
 
 		var parser = new JPEGParser();
 		parser.on( 'xmp', function( data, start, length ) {
-			
+			console.error(data);
 		});
 
 		parser.parse( data );
 	};
 }());
-
