@@ -7,6 +7,7 @@ Tools
 =====
 * Online EXIF viewer http://regex.info/exif.cgi
 * http://search.cpan.org/dist/Image-ExifTool/lib/Image/ExifTool/TagNames.pod
+* SVG filter examples http://docs.webplatform.org/wiki/svg/tutorials/smarter_svg_filters
 
 PNG Standard example
 ====================
