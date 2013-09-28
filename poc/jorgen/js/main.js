@@ -45,7 +45,6 @@
 				name: 'Jef',
 				age: 28
 			});
-
 			
 			// Get example 
 			//data.get('user')
