@@ -34,8 +34,7 @@
 		data = new Uint8Array( data );
 
 		var parser = new JPEGParser();
-		parser.on( 'xmp', function( data, start, length ) {
-			
+		parser.on( 'xmp', function( data, start, length ) {			
 			XMP = data;
 			console.log(data);
 			data.set('test', 'hello');
@@ -45,7 +44,13 @@
 				age: 28
 			});
 			console.error(data.get('user'));
+
 		});
+		parser.on( 'exif', function( data ) {
+			var i = 0;
+			for( i in data )
+				console.log( data[i]._id.toString(16), data[i].key, data[i].value() );
+		})
 
 		parser.parse( data );
 	};
