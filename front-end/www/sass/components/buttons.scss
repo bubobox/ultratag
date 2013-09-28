@@ -1,0 +1,51 @@
+// BUTTONS
+
+.btn,
+button,
+input[type=submit],
+input[type=button] {
+    @include display-inline-block();
+    margin: 0 0 10px 0;
+    padding: 0 10px;
+    border: 0;
+    display: inline-block;
+    position: relative;
+    
+    background: $primary;
+    cursor: pointer;
+    
+    font-size: 13px;
+    font-family: $base-font-family;
+    font-weight: $normal;
+    color: $white;
+    line-height: 30px;
+    text-decoration: none;
+
+    &:hover, &:focus {
+        color: $white;
+        background: darken($primary, 10%);
+    }
+    &:active {
+        background: darken($primary, 20%);
+    }
+    .lte-ie7 &{
+        width: auto;
+        overflow: visible;
+    }
+
+    &.secondary {
+        background: $secondary;
+        &:hover, &:focus {
+            color: $white;
+            background: darken($secondary, 10%);
+        }
+        &:active {
+            background: darken($secondary, 20%);
+        }
+    }
+
+    &.large {
+        padding: 15px 30px;
+        font-size: 18px;
+    }
+}

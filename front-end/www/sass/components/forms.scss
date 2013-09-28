@@ -1,0 +1,103 @@
+form {
+    @include box-sizing( border-box );
+    width: 100%;
+
+    .input-group {
+        @extend .clearfix;
+        @include box-sizing( border-box );
+        margin-bottom: 10px;
+    }
+
+    input[type=text],
+    input[type=email],
+    input[type=password],
+    textarea,
+    select {
+        @include box-sizing( border-box );
+        display: block;
+        width: 100%;
+        margin: 0 0 15px 0;
+        padding: 5px 10px;
+        border: 1px solid #eaedf1;
+        &:focus {
+            outline:none;
+        }
+    }
+
+    textarea {
+        min-height: 156px;
+        .lte-ie7 &{
+            height: 156px;
+        }
+    }
+
+    select {
+        width: auto;
+        margin: 5px 0 15px;
+    }
+
+    span.error {
+        padding-left: 20px;
+        margin-left: 20px;
+        font-size: 14px;
+        color: #8d313d;
+        display: none;
+    }
+
+    .error {
+        input[type=text],
+        input[type=email],
+        input[type=password],
+        textarea {
+            background-color: #f2dede;
+            border-color: #ff0000;
+            &:focus {
+                border-color: $primary;
+            }
+        }
+        span.error {
+            @include icon('warning', $offset-y: 5px);
+            display: block;
+            margin: -5px 0 20px 5px;
+            text-transform: none;
+            strong {
+                text-transform: none;
+            }
+        }
+    }
+
+    label,
+    .label {
+        margin: 0 0 1px;
+        display: inline-block;
+        font-size: 16px;
+        font-weight: normal;
+        color: #616777;
+        cursor: pointer;
+    }
+
+    .checkboxes {
+        label {
+            margin: 0 0 0 b(1);
+        }
+    }
+
+    input {
+        &::-webkit-input-placeholder {
+           font-size: 14px;
+           font-style: italic;
+        }
+        &:-moz-placeholder /* Firefox 18- */ {
+           font-size: 14px;
+           font-style: italic;
+        }
+        &::-moz-placeholder /* Firefox 19+ */ {
+           font-size: 14px;
+           font-style: italic;
+        }
+        &:-ms-input-placeholder {
+           font-size: 14px;
+           font-style: italic;
+        }
+    }
+}

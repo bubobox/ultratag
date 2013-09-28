@@ -1,0 +1,18 @@
+// FOOTER
+
+.footer-main {
+    background-color: #1f3133;
+    padding-top: 5px;
+    color: #9ea7b2;
+
+    .disclaimer {
+        text-align: right;
+    }
+    @media screen and(max-width:$breakpoint) {
+        .credits,
+        .disclaimer {
+            text-align: center;
+            width: 100%;
+        }
+    }
+}

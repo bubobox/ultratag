@@ -1,0 +1,59 @@
+// ICONS
+
+// Vars
+$icons-spacing: 20px; 
+
+
+// ICONS Mixin
+$extra-space:   0px;
+
+$icons: sprite-map("icons/*.png", $spacing: $icons-spacing);
+// $icons2x: sprite-map("icons2x/*.png", $spacing: 80px);
+
+$sprite-url: sprite-url($icons);
+// $sprite-url-2x: sprite-url($icons2x);
+
+@mixin icon($name, $offset-x: 0px, $offset-y: 0px) {
+
+    background-image: $sprite-url;
+    background-position: sprite-position($icons, $name, $offset-x, $offset-y);
+    background-repeat: no-repeat;
+    
+    // FOR RETINA
+    // @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
+        
+    //     @if (sprite-position($icons, $name) != sprite-position($icons2x, $name)) {
+    //         $ypos: round(nth(sprite-position($icons2x, $name, $offset-x, $offset-y*2), 2) / 2);
+    //         background-position: $offset-x $ypos;
+    //     }
+
+    //     // Grab size of non2x sprite image.
+    //     @include background-size(image-width(sprite-path($icons)) image-height(sprite-path($icons)));
+    //     background-image: $sprite-url-2x;
+    // }
+}
+
+
+// Imports
+// @import "icons/*.png";
+
+// GET A LIST OF THE SPRITE MAP IMAGE NAMES NAMES:
+$icon-names: sprite_names($icons);
+
+// Generate classes
+@each $icon in $icon-names {
+    .icon-#{$icon} {
+        @include icon($icon);
+    }
+    .icon.icon-#{$icon} {
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        width: image-width(sprite-file($icons, $icon));
+        height: image-height(sprite-file($icons, $icon));
+        .lte-ie7 &{
+            zoom: 1;
+            display: inline;
+        }
+    }
+}
