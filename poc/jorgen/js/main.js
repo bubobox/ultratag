@@ -35,7 +35,16 @@
 
 		var parser = new JPEGParser();
 		parser.on( 'xmp', function( data, start, length ) {
-			console.error(data);
+			
+			XMP = new XMPDocument(data);
+			console.error(XMP, data);
+			XMP.set('test', 'hello');
+			XMP.set('names', ['Jorgen', 'Wim', 'Stefan', 'Joris']);
+			XMP.set('user', {
+				name: 'Jef',
+				age: 28
+			});
+			console.error(XMP.get('user'));
 		});
 
 		parser.parse( data );
