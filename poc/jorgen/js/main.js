@@ -23,7 +23,6 @@
 		var reader = new FileReader();
 
 		reader.onloadend = function( e ) {
-			console.log( e );
 			parseData( e.currentTarget.result );
 		}
 
@@ -31,44 +30,101 @@
 	}
 
 	function parseData( data ) {
-		var length = data.length;
-		var skip = 0;
-		var i = 0;
-		var b = 0;
+		data = new Uint8Array( data );
+
+		var parser = new JPEGParser();
+		parser.on( 'xmp', function( data, start, length ) {
+			var s = '',
+				i = 0,
+				dom;
+
+			for( i=0; i<length; i++ ) {
+				s += String.fromCharCode( data[start+i] );
+			}
+
+			s = s.substring( s.indexOf( '<' ) );
+
+			dom = new DOMParser();
+			doc = dom.parseFromString( s );
+			console.log( doc );
+		});
+
+		parser.parse( data );
+	};
+}());
+
+var JPEGParser = function() {
+	this._listeners = {};
+	this.on( 'marker', this._onregion.bind( this ) );
+};
+
+JPEGParser.prototype = {
+
+	_listeners: null,
+
+	on: function( e, listener ) {
+		if( !this._listeners[e] )
+			this._listeners[e] = [];
+
+		this._listeners[e].push( listener );
+	},
+
+	trigger: function() {
+		var arg = [].slice.call( arguments, 0 ),
+			e = arg.shift(),
+			i = 0,
+			listeners = this._listeners[ e ];
+
+		for( i in listeners ) {
+			listeners[i].apply( null, arg );
+		}
+	},
+
+	parse: function( /* Uint8Array */ data ) {
+		var length = data.length,
+			skip = 0,
+			i = 0,
+			b = 0;
 
 		for( i=0; i<length; i++ ) {
 			b = ( b << 8 ) & 0xFFFF; // shift byte, truncate data
 			b += data[i]; // add new data;
 
+			// Valid markers
 			if( b >= 0xFFD8 && b <= 0XFFFE ) {
-				if( b == 0xFFD8 )
-					continue;
-				if( b == 0xFFD9 )
-					continue;
-				if( b >= 0xFFD0 && b <= 0xFFD7 )
-					continue;
-				if( b == 0xFFDD ) {
-					i++;
+				if( b == 0xFFD8 ||
+					b == 0xFFD9 ||
+					( b >= 0xFFD0 && b <= 0xFFD7 ) ||
+					b == 0xFFDD ) {
+					this.trigger( 'marker', b, data, i+1, 0 );
 					continue;
 				}
 
-				if( b == 0xFFE4 )
-					break;
+				skip = ( data[i+1] << 8 ) + data[i+2];
 
-				skip = ( data[i+1] << 8 ) + data[i+2] + 2;
-				i += skip - 1;
+				this.trigger( 'marker', b, data, i+3, skip-2 );
+
+				i += skip - 1 + 2;
 			}
 		}
+	},
 
-		skip = ( data[i+1] << 8 ) + data[i+2] + 2;
+	_onregion: function( marker, data, start, length ) {
+		if( marker == 0xFFE1 ) {
+			var id = '';
+			id += String.fromCharCode( data[start] ) +
+				String.fromCharCode( data[start+1] ) +
+				String.fromCharCode( data[start+2] ) +
+				String.fromCharCode( data[start+3] );
 
-		i += 2;
+			if( id == 'Exif' )
+				return this.trigger( 'exif', data, start, length );
 
-		string = '';
-		for( ; skip--; i++ ) {
-			string += String.fromCharCode( data[i] );
+			if( id == 'http' )
+				return this.trigger( 'xmp', data, start, length );
+
+			return;
 		}
+	}
 
-		console.log( string );
-	};
-}());
+};
