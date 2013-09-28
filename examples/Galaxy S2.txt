@@ -1,0 +1,14 @@
+General
+Complete name                            : IMG_20130928_121257.jpg
+Format                                   : JPEG
+File size                                : 2.38 MiB
+
+Image
+Format                                   : JPEG
+Width                                    : 3 264 pixels
+Height                                   : 2 448 pixels
+Chroma subsampling                       : 4:2:2
+Bit depth                                : 8 bits
+Compression mode                         : Lossy
+
+
