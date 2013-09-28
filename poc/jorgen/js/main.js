@@ -31,20 +31,24 @@
 	}
 
 	function parseData( data ) {
+
 		data = new Uint8Array( data );
 
 		var parser = new JPEGParser();
-		parser.on( 'xmp', function( data, start, length ) {			
-			XMP = data;
-			console.log(data);
+
+		parser.on( 'xmp', function( data, start, length ) {
+			
+			// Set example
 			data.set('test', 'hello');
 			data.set('names', ['Jorgen', 'Wim', 'Stefan', 'Joris']);
 			data.set('user', {
 				name: 'Jef',
 				age: 28
 			});
-			console.error(data.get('user'));
 
+			
+			// Get example 
+			//data.get('user')
 		});
 		parser.on( 'exif', function( data ) {
 			var i = 0;
