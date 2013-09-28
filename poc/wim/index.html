@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Hello world</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+    	<input type="file" id="files" name="files[]" multiple />
+		<output id="list"></output>
+
+		<script>
+		  function handleFileSelect(evt) {
+		    var files = evt.target.files; // FileList object
+
+		    // files is a FileList of File objects. List some properties.
+		    var output = [];
+		    for (var i = 0, f; f = files[i]; i++) {
+		      output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+		                  f.size, ' bytes, last modified: ',
+		                  f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+		                  '</li>');
+		    }
+		    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+
+
+		    var file = files[0];
+		    var reader = new FileReader();
+
+		    // If we use onloadend, we need to check the readyState.
+		    reader.onloadend = function(evt) {
+		      if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+		        var data = evt.target.result;
+		        console.error(data);
+		        var start = data.indexOf('x:xmpmeta');
+		        var stop = data.indexOf('/x:xmpmeta');
+
+		        console.error(data.slice(start, stop));
+
+		      }
+		    };
+
+		    var blob = file;
+		    reader.readAsBinaryString(blob);
+
+
+		  }
+
+
+		  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+		</script>
+    </body>
+</html>
