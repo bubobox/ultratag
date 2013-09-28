@@ -1,0 +1,18 @@
+General
+Complete name                            : IMG_20130914_110541.jpg
+Format                                   : JPEG
+File size                                : 1.01 MiB
+
+Image
+Format                                   : JPEG
+Width                                    : 2 048 pixels
+Height                                   : 1 536 pixels
+Stand									 : 90
+Maker                                    : samsung
+Model									 : GT-P1000
+Flits									 : Geen flits
+Brandpuntafst.							 : 2.78 mm
+Witbalans								 : Autom.
+Diafragma								 : 2.6
+Belichtingstijd							 : 1/16
+ISO										 : 100 
