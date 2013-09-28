@@ -78,6 +78,13 @@ JPEGParser.prototype = {
 				String.fromCharCode( data[start+2] ) +
 				String.fromCharCode( data[start+3] );
 
+			/**
+			 * Event argument format
+			 *
+			 * @param mixed data Data as returned by parser.
+			 * @param object raw Raw data. ( buffer, start, length );
+			 */
+
 			if( id == 'Exif' )
 				return this.trigger( 'exif', data, start, length );
 
@@ -112,7 +119,7 @@ JPEGParser.prototype = {
 
 			s = s.substring( s.indexOf( '<' ) );
 
-			return dom.parseFromString( s );
+			return dom.parseFromString( s, 'text/xml' );
 		},
 
 		/**
