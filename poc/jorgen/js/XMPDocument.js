@@ -4,16 +4,19 @@ XMPDocument = function(document) {
 
 XMPDocument.prototype = {
 
+	_defaultTagName: 'rdf:UltraTag',
 	_document: null,
 
-	set: function(key, value) {
-		var element = this.fetchElement('rdf:UltraTag');
+	set: function(key, value, tag) {
+		var tag = tag || this._defaultTagName;
+		var element = this.fetchElement(tag);
 		element.setAttribute(key, this.serializeValue(value));
 	},
 
-	get: function(key) {
+	get: function(key, tag) {
+		var tag = tag || this._defaultTagName;
 		key = key || null;
-		element = this.fetchElement('rdf:UltraTag');
+		element = this.fetchElement(tag);
 
 		if( ! element) {
 			return {};
