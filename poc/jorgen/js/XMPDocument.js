@@ -45,17 +45,18 @@ XMPDocument.prototype = {
 	},
 
 	fetchElement: function(name) {
+		var children = this._document.children[0].children[0].children;
 
 		// Search ultratag
-		for(var idx in this._document.children[0].children[0].children) {
-			var element = this._document.children[0].children[0].children[idx];
+		for(var idx in children) {
+			var element = children[idx];
 			if(element.tagName === name) {
 				return element;
 			}
 		}
 
 		newy = this._document.createElement(name);
-		this._document.children[0].children[0].appendChild(newy);
+		children.appendChild(newy);
 		return newy; 
 	},
 
