@@ -6,6 +6,7 @@ Extended image EXIF data
 Tools
 =====
 * Online EXIF viewer http://regex.info/exif.cgi
+* http://search.cpan.org/dist/Image-ExifTool/lib/Image/ExifTool/TagNames.pod
 
 PNG Standard example
 ====================
