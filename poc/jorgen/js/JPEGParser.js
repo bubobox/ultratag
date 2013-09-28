@@ -153,7 +153,6 @@ JPEGParser.prototype = {
 				result = [];
 
 			for( j=0; j<count; j++ ) {
-				tmpstring = '';
 				tag = {
 					id: ( data[i++] << 8 ) + data[i++],
 					type: ( data[i++] << 8 ) + data[i++],
@@ -161,10 +160,7 @@ JPEGParser.prototype = {
 						( data[i++] << 16 ) +
 						( data[i++] << 8 ) +
 						data[i++],
-					valueOffset: ( data[i++] << 24 ) +
-						( data[i++] << 16 ) +
-						( data[i++] << 8 ) +
-						data[i++],
+					valueOffset: 0,
 					value: []
 				};
 
@@ -177,9 +173,24 @@ JPEGParser.prototype = {
 				if( tag.type == 5 )
 					tag.components *= 8;
 
-				for( x=0; x<tag.components; x++ ) {
-					tag.value.push( data[initial_byte+tag.valueOffset+x]);
+				// Values could be embeded where we would expect the offset to be.
+				if( tag.components <= 4 ) {
+					tag.value.push( data[i++] );
+					tag.value.push( data[i++] );
+					tag.value.push( data[i++] );
+					tag.value.push( data[i++] );
+				} else {
+					tag.valueOffset = ( data[i++] << 24 ) +
+						( data[i++] << 16 ) +
+						( data[i++] << 8 ) +
+						data[i++];
+
+					for( x=0; x<tag.components; x++ ) {
+						tag.value.push( data[initial_byte+tag.valueOffset+x]);
+					}
 				}
+
+				
 				result.push( new EXIFTag( tag.id, tag.type, tag.value ) );
 			}
 

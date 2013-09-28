@@ -16,9 +16,8 @@ EXIFTag.prototype = {
 		if( this._type == 2 )
 			return this._value.map(function(c){return String.fromCharCode(c);}).join('');
 
-		if( this._type == 3 ) {
+		if( this._type == 3 )
 			return ( this._value[0] << 8 ) + this._value[1];
-		}
 
 		if( this._type == 4 )
 			return ( this._value[0] << 24 ) +

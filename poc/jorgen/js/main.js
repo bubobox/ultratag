@@ -49,7 +49,7 @@
 		parser.on( 'exif', function( data ) {
 			var i = 0;
 			for( i in data )
-				console.log( data[i]._id.toString(16), data[i].key, data[i].value() );
+				console.log( data[i].key, data[i].value() );
 		})
 
 		parser.parse( data );
