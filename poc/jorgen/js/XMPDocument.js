@@ -18,6 +18,8 @@ XMPDocument.prototype = {
 		key = key || null;
 		element = this.fetchElement(tag);
 
+		console.log( element );
+
 		if( ! element) {
 			return {};
 		}
@@ -76,6 +78,7 @@ XMPDocument.prototype = {
 	},
 
 	isJSON: function(value) {
+		return value.length > 0 && value[0] == '{';
 		return /^[\],:{}\s]*$/.test(value.replace(/\\["\\\/bfnrtu]/g, '@').
 			replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
 			replace(/(?:^|:|,)(?:\s*\[)+/g, '')) ? true : false;
