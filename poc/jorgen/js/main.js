@@ -64,17 +64,9 @@
 		writer.on( 'xmp', function( doc ) {
 			doc.set('test', 'Hello');
 
-			console.log( doc._document );
+			var xml = (new XMLSerializer()).serializeToString(doc._document);
+			xml = 'http://ns.adobe.com/xap/1.0/' + xml;
 
-			//var xml = (new XMLSerializer()).serializeToString(doc._document);
-
-			//console.log( (new DOMParser()).parseFromString( xml, 'text/xml' ) );
-
-			//xml = 'http://ns.adobe.com/xap/1.0/' + xml;
-
-			//console.log( 'xml', xml );
-
-			return;
 			var buf = new Uint8Array( xml.length );
 			for( i=0; i<xml.length; i++ ) {
 				buf[i] = xml.charCodeAt(i);

@@ -124,8 +124,6 @@ JPEGParser.prototype = {
 			s = s.substring( s.indexOf( '<' ) );
 
 			var domDocument = dom.parseFromString( s, 'text/xml' );
-
-			console.log( domDocument );
 			return new XMPDocument(domDocument);
 		},
 
