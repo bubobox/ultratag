@@ -119,6 +119,9 @@ $(function(){
             return;
         }
 
+        // Clean tabs
+        $('#tabs ul li,.tab').remove();
+
         // Start reading file
         var reader = new FileReader();
         reader.onloadend = function( e ) {
