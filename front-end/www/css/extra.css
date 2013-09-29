@@ -1,0 +1,13 @@
+.info {
+	display: none;
+}
+
+#preview {
+	max-width: 400px;
+	max-height: 400px;
+}
+
+table td {
+	border-bottom: 1px solid #EAEDF1;
+	padding: 10px;
+}

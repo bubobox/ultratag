@@ -1,0 +1,81 @@
+/*
+Syntax error: File to import not found or unreadable: compass/reset/utilities.
+              Load path: /Users/wim/Code/bubobox/sandbox/ultratag/front-end
+        on line 2 of www/sass/compass/utilities/general/_reset.scss
+        from line 1 of www/sass/compass/utilities/_general.scss
+        from line 2 of www/sass/compass/_utilities.scss
+        from line 2 of www/sass/main.scss
+
+1: // Compass includes
+2: @import "compass/utilities";
+3: @import "compass/css3";
+4: 
+5: // Font import
+6: @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic);
+7: 
+
+Backtrace:
+www/sass/compass/utilities/general/_reset.scss:2
+www/sass/compass/utilities/_general.scss:1
+www/sass/compass/_utilities.scss:2
+www/sass/main.scss:2
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/import_node.rb:67:in `import'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/import_node.rb:28:in `imported_file'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/import_node.rb:37:in `css_import?'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:217:in `visit_import'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:227:in `visit_import'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:227:in `map'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:227:in `visit_import'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:227:in `visit_import'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:227:in `map'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:227:in `visit_import'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:227:in `visit_import'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:227:in `map'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:227:in `visit_import'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:53:in `map'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:109:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:121:in `with_environment'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:108:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:128:in `visit_root'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:7:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/visitors/perform.rb:7:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/tree/root_node.rb:20:in `render'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/engine.rb:315:in `_render'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/engine.rb:262:in `render'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/plugin/compiler.rb:362:in `update_stylesheet'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/plugin/compiler.rb:203:in `update_stylesheets'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/plugin/compiler.rb:201:in `each'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/plugin/compiler.rb:201:in `update_stylesheets'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/plugin/compiler.rb:235:in `watch'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/plugin.rb:107:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/plugin.rb:107:in `method_missing'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/exec.rb:463:in `watch_or_update'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/exec.rb:326:in `process_result'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/exec.rb:41:in `parse'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/../lib/sass/../sass/exec.rb:21:in `parse!'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.11/bin/sass:9
+/usr/bin/sass:19:in `load'
+/usr/bin/sass:19
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: File to import not found or unreadable: compass/reset/utilities.\A               Load path: /Users/wim/Code/bubobox/sandbox/ultratag/front-end\A         on line 2 of www/sass/compass/utilities/general/_reset.scss\A         from line 1 of www/sass/compass/utilities/_general.scss\A         from line 2 of www/sass/compass/_utilities.scss\A         from line 2 of www/sass/main.scss\A \A 1: // Compass includes\A 2: @import \"compass/utilities\";\A 3: @import \"compass/css3\";\A 4: \A 5: // Font import\A 6: @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic);\A 7: "; }
