@@ -1,0 +1,73 @@
+#!/bin/sh
+
+
+custom_compile() {
+
+	custom_setup_php
+	custom_setup_nginx
+
+	custom_dump_logs
+
+}
+
+custom_setup_php() {
+	local BOOT
+	local line
+	local var
+	local val
+
+	BOOT="${BUILD_DIR}/boot.sh"
+
+	grep -v "/app/vendor/php5-fpm/sbin/php-fpm &" "$BOOT" > "${BOOT}.tmp"
+	mv "${BOOT}.tmp" "$BOOT"
+
+	sed -i 's/user = nobody//g' "${BUILD_DIR}/vendor/php5-fpm/etc/php-fpm.conf"
+	sed -i 's/group = nobody//g' "${BUILD_DIR}/vendor/php5-fpm/etc/php-fpm.conf"
+
+	cat >> "$BOOT" << EOF
+# Set line separator to newline
+IFS='
+';
+
+for line in \$(printenv); do
+	var=\$(echo \$line | cut -d"=" -f1)
+	val=\$(echo \$line | sed "s/\$var=//g")
+
+	echo "env[\$var] = \"\$val\"" >> "/app/vendor/php5-fpm/etc/php-fpm.conf"
+done
+
+# Unset line separator
+unset IFS
+EOF
+
+	echo "/app/vendor/php5-fpm/sbin/php-fpm -F &" >> "$BOOT"
+	cat >> "${BUILD_DIR}/vendor/php5-fpm/etc/php.ini" << EOF
+memory_limit = 256M
+error_log = /app/vendor/php5-fpm/var/log/error.log
+display_errors = Off
+log_errors = On
+error_reporting = E_ALL
+expose_php = Off
+date.timezone = "Europe/Brussels"
+
+EOF
+touch "${BUILD_DIR}/vendor/php5-fpm/var/log/error.log"
+
+}
+
+custom_setup_nginx() {
+	NGINX_CONFIG="${BUILD_DIR}/vendor/nginx/conf/nginx.conf"
+
+	cp "${BUILD_DIR}/build/heroku/nginx.conf" "${NGINX_CONFIG}"
+	cp "${BUILD_DIR}/build/heroku/php.conf" "$(dirname ${NGINX_CONFIG})"
+}
+
+custom_dump_logs() {
+	cat >> "${BUILD_DIR}/boot.sh" << EOF
+sleep 5
+tail -f /app/vendor/php5-fpm/var/log/*.log &
+tail -f /app/vendor/nginx/logs/*.log &
+EOF
+}
+
+custom_compile
