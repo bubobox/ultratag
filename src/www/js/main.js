@@ -29,7 +29,7 @@ $(function(){
     // Show the dropzone when dragging files (not folders or page
     // elements). The dropzone is hidden after a timer to prevent 
     // flickering to occur as `dragleave` is fired constantly.
-    var dragTimer;
+    var dragTimer, lat = null, lng = null;
     $(document).on('dragover', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -104,6 +104,7 @@ $(function(){
 
             var table = createExifTable(data);
             createTab('EXIF', 'EXIF', table);
+
         })
         parser.parse( data );
     };
@@ -143,8 +144,6 @@ $(function(){
         $('.info #size').html(file.size);
         $('.info #modified').html(file.lastModifiedDate);
         $('.info #mime').html(file.type);
-
-        initMaps();
     }
 
     // Bind triggers for tabs
@@ -161,6 +160,11 @@ $(function(){
         $('[data-trigger=tab][data-tab=' + idx + ']').addClass('active').siblings().removeClass('active');
         $('.tab').hide();
         $('#tab' + idx).show();
+
+        var name = $('#tab' + idx + ' h2').html();
+        if(name === 'Map') {
+            initMaps(lat, lng);
+        }
     }
 
     function view(name) {
@@ -191,8 +195,20 @@ $(function(){
             if( Object.prototype.toString.call( val ) === '[object Array]' )
                 val = convertExifValue( data[idx] );
 
+            if(data[idx].key == 'GPSLatitude') {
+                lat = val;
+            }
+            if(data[idx].key == 'GPSLongitude') {
+                lng = val;
+            }
+
             html += '<tr><td>' + data[idx].key + '</td><td>' + val + '</td></tr>';
         }
+
+        if(lat && lng) {
+            createTab('Map', 'Map', '<div id="map-canvas" class="maps"></div>');
+        }
+
         return '<table width="100%"><tbody>' + html + '</tbody></table>';
     }
 
@@ -240,32 +256,38 @@ $(function(){
     }
 
     
-    function initMaps() {
+    function initMaps(lat, lng) {
         var map = null;
 
         // Disable initialization
         initMaps = function() { return map };
 
         // MAPS
-        if( !isMobile.any() ) {
-            function initialize() {
+        //if( !isMobile.any() ) {
+            function initialize(lat, lng) {
+                var position = new google.maps.LatLng(lat, lng);
                 var mapOptions = {
-                    zoom: 8,
-                    center: new google.maps.LatLng(-34.397, 150.644),
+                    zoom: 15,
+                    center: position,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
-                map = new google.maps.Map(document.getElementById('map-canvas'),
-                    mapOptions);
+                map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+                var marker = new google.maps.Marker({
+                    position: position,
+                    title:"Hello World!"
+                });
+
+                marker.setMap(map);
             }
 
-            google.maps.event.addDomListener(window, 'load', initialize);
-        } else {
+            initialize(lat, lng);
+        /*} else {
             var key = 'AIzaSyCqPHHjPX1c7bDnZ8z318Yvj7DlCKeq9SU';
             var image = '<img class="static-map" src="http://maps.googleapis.com/maps/api/staticmap?center=New+York,NY&zoom=13&size=600x400&key='+key+'&sensor=false">';
             $('.maps').append(image);
-        }
+        }*/
     }
-
 
     // If on mobile scroll to first pixel
     if(isMobile.any()) {
