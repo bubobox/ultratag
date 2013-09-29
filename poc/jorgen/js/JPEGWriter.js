@@ -53,7 +53,7 @@ JPEGWriter.prototype.parse = function( data ) {
 		}
 	}
 
-	return URL.createObjectURL(new Blob( buffer, {type:'application/octet-stream'}));
+	return URL.createObjectURL(new Blob( buffer, {type:'image/jpeg'}));
 }
 
 JPEGWriter.prototype.trigger = function() {
