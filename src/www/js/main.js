@@ -33,6 +33,7 @@ $(function(){
     $(document).on('dragover', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        view('landing');
         var dt = e.originalEvent.dataTransfer;
         if(dt.types != null && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('application/x-moz-file'))) {
             $(".drag-drop").addClass('visible');
@@ -53,54 +54,86 @@ $(function(){
         $(".drag-drop").removeClass('visible');
         if(e.originalEvent.dataTransfer){
             var file = e.originalEvent.dataTransfer.files[0];
-
-            if(file.type !== 'image/jpeg') {
-                alert('For the moment we only support jpeg images.');
-            }
-
-            readFile(file);
+            useFile(file);
         }
     });
 
     document.getElementById("file-upload").addEventListener("change", handleFiles, false);
     function handleFiles() {
         var file = this.files[0];
-        readFile(file);
-    }
-
-    function readFile( file ) {
-        var reader = new FileReader();
         useFile(file);
-        reader.onloadend = function( e ) {
-            parseData( e.currentTarget.result );
-        }
-        reader.readAsArrayBuffer( file );
     }
 
     function parseData( data ) {
         view('info');
         data = new Uint8Array( data );
+
         var parser = new JPEGParser();
         parser.on( 'xmp', function( data, start, length ) {
             var table = createXmpTable( data.get() );
             $('.xmp .table-wrapper.ultratag').html( table );
 
+            var info = data.get( null, 'rdf:Description' );
+
+            // Create namespaces grouped data object
+            var namespaces = {};
+            for(key in info) {
+                var value = info[key];
+                if(key.indexOf(':')) {
+                    var parts = key.split(':');
+                    if( ! namespaces.hasOwnProperty(parts[0])) {
+                        namespaces[parts[0]] = {};
+                    }
+                    namespaces[parts[0]][parts[1]] = value;
+                } else {
+                    namespaces['global'][key] = value;
+                }
+            }
+
+            // Add tabs for namespaces
+            for(namespace in namespaces) {
+                var info = namespaces[namespace];
+                table = createXmpTable( info );
+                createTab(namespace, namespace, table);
+            }
+
             table = createXmpTable( data.get( null, 'rdf:Description' ) );
             $('.xmp .table-wrapper.other').html( table );
         });
         parser.on( 'exif', function( data ) {
+
             var table = createExifTable(data);
-            $('.exif .table-wrapper').html(table);
+            createTab('EXIF', 'EXIF', table);
         })
         parser.parse( data );
     };
 
     function useFile(file) {
 
+        // Check if file is valid
+        if( ! isValidImage(file)) {
+            $('#upload .large').addClass('shake');
+            setTimeout(function() {
+                $('#upload .large').removeClass('shake');
+            }, 1000);
+            return;
+        }
+
+        // Start reading file
+        var reader = new FileReader();
+        reader.onloadend = function( e ) {
+            parseData( e.currentTarget.result );
+        }
+        reader.readAsArrayBuffer( file );
+
+        // Only show first tab
+        $('.tab').hide().eq(0).show()
+
         // Set file as preview
         var data = URL.createObjectURL(file);
         document.getElementById('preview').src = data;
-        console.log(file);
+
+        // Add basic info about file
         $('.info #name').html(file.name);
         $('.info #width').html(file.width);
         $('.info #height').html(file.height);
@@ -112,8 +145,13 @@ $(function(){
     }
 
     // Bind triggers for tabs
-    $('[data-trigger=tab]').on('click', function() {
+    $('body').on('click', '[data-trigger=tab]', function() {
         tab($(this).data('tab'));
+    });
+
+    $('#tinynav1').on('change', function() {
+        var value = $(this).val();
+        tab(value);
     });
 
     function tab(idx) {
@@ -127,10 +165,19 @@ $(function(){
         $('.' + name).show();
     }
 
-    // Tinynav 
-    $(".tabs").tinyNav({
-        active: 'active' // String: Set the "active" class
-    });
+    function createTab(name, title, content) {
+        var lastIndex = parseInt($('#tabs ul li').last().data('tab')) || 0;
+        var newIndex = lastIndex + 1;
+        var content = $('<div id="tab' + newIndex + '" class="xmp tab col col-9 content"><h2>' + title + '</h2>' + content + '</div>').hide();
+        $('#tabs ul').append('<li data-trigger="tab" data-tab="' + newIndex + '" data-name="' + name + '"><a href="javascript:void(0)">' + name + '</a></li>');
+        $('#tabs #tinynav1').append('<option value="' + newIndex + '">' + name + '</option>');
+        $('#tabs').parent().append(content);
+
+        // Auto activate first tab
+        if(lastIndex === 0) {
+            tab(newIndex);
+        }
+    }
 
     function createExifTable(data)
     {
@@ -177,10 +224,24 @@ $(function(){
         $('.select-helper span').html($(this).find('option:selected').html());
     });
 
-    var map = null;
+    /**
+     * Check if we support the select file object
+     */
+    function isValidImage(file)
+    {
+        if(file.type === "image/jpeg" || file.type === "image/jpg") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
     function initMaps() {
+        var map = null;
+
         // Disable initialization
-        initMaps = function() {};
+        initMaps = function() { return map };
 
         // MAPS
         if( !isMobile.any() ) {
@@ -201,4 +262,11 @@ $(function(){
             $('.maps').append(image);
         }
     }
+
+
+    // If on mobile scroll to first pixel
+    if(isMobile.any()) {
+        window.scrollTo(0, 1); 
+    }
+
 });
