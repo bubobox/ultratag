@@ -85,6 +85,30 @@ $(function(){
             var table = createXmpTable( data.get() );
             $('.xmp .table-wrapper.ultratag').html( table );
 
+            var info = data.get( null, 'rdf:Description' );
+
+            // Create namespaces grouped data object
+            var namespaces = {};
+            for(key in info) {
+                var value = info[key];
+                if(key.indexOf(':')) {
+                    var parts = key.split(':');
+                    if( ! namespaces.hasOwnProperty(parts[0])) {
+                        namespaces[parts[0]] = {};
+                    }
+                    namespaces[parts[0]][parts[1]] = value;
+                } else {
+                    namespaces['global'][key] = value;
+                }
+            }
+
+            // Add tabs for namespaces
+            for(namespace in namespaces) {
+                var info = namespaces[namespace];
+                table = createXmpTable( info );
+                createTab(namespace, namespace, table);
+            }
+
             table = createXmpTable( data.get( null, 'rdf:Description' ) );
             $('.xmp .table-wrapper.other').html( table );
         });
@@ -111,11 +135,14 @@ $(function(){
         $('.info #modified').html(file.lastModifiedDate);
         $('.info #mime').html(file.type);
 
+        createTab('Hello world', 'This is a test', 'This is some cool html content');
+
         initMaps();
     }
 
     // Bind triggers for tabs
-    $('[data-trigger=tab]').on('click', function() {
+    $('body').on('click', '[data-trigger=tab]', function() {
+        console.error('clikc');
         tab($(this).data('tab'));
     });
 
@@ -134,6 +161,14 @@ $(function(){
     $(".tabs").tinyNav({
         active: 'active' // String: Set the "active" class
     });
+
+    function createTab(name, title, content) {
+        var lastIndex = parseInt($('#tabs ul li').last().data('tab'));
+        var newIndex = lastIndex + 1;
+        var content = $('<div id="tab' + newIndex + '" class="xmp tab col col-9 content"><h2>' + title + '</h2>' + content + '</div>').hide();
+        $('#tabs ul').append('<li data-trigger="tab" data-tab="' + newIndex + '"><a href="javascript:void(0)">' + name + '</a></li>');
+        $('#tabs').parent().append(content);
+    }
 
     function createExifTable(data)
     {
