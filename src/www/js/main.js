@@ -113,7 +113,7 @@ $(function(){
         });
         parser.on( 'exif', function( data ) {
             var table = createExifTable(data);
-            $('.exif .table-wrapper.ultratag').html(table);
+            $('.exif .table-wrapper').html(table);
         })
         parser.parse( data );
     };
