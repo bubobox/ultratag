@@ -246,6 +246,9 @@ img {
 
 // Basic info 
 .basic-info {
+    @include clearfix;
+    float: none;
+    clear: both;
     background: #323a44;
     color: #fff;
     span {

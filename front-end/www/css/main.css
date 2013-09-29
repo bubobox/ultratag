@@ -478,6 +478,14 @@ html, body { height: 100%; }
 .tabs a:hover, .tabs a:focus { background: #f9fafc; color: #9ea7b2; }
 /* line 29, ../sass/components/tabs.scss */
 .tabs .active a { background: #fff; color: #9ea7b2; border-bottom: 1px solid transparent; font-weight: 500; }
+/* line 37, ../sass/components/tabs.scss */
+.tabs .add-more { padding: 10px; }
+/* line 39, ../sass/components/tabs.scss */
+.tabs .add-more a { -webkit-border-radius: 15px; -moz-border-radius: 15px; -ms-border-radius: 15px; -o-border-radius: 15px; border-radius: 15px; text-align: center; font-weight: 700; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); background: #f47641; }
+/* line 46, ../sass/components/tabs.scss */
+.tabs .add-more a:hover, .tabs .add-more a:focus { color: white; background: #f15311; }
+/* line 50, ../sass/components/tabs.scss */
+.tabs .add-more a:active { background: #c4420b; }
 
 /* line 4, ../sass/components/grid.scss */
 .col-1 { width: 8.33333%; float: left; display: block; }
@@ -653,24 +661,24 @@ img { width: auto; max-width: 100%; display: block; margin: 0 auto; }
 .drag-drop span { display: block; width: 100%; text-align: center; font-size: 34px; font-weight: 700; margin-top: 30px; line-height: 150%; }
 
 /* line 248, ../sass/main.scss */
-.basic-info { background: #323a44; color: #fff; }
-/* line 251, ../sass/main.scss */
+.basic-info { overflow: hidden; *zoom: 1; float: none; clear: both; background: #323a44; color: #fff; }
+/* line 254, ../sass/main.scss */
 .basic-info span { font-weight: 300; }
-/* line 256, ../sass/main.scss */
-.basic-info .img { padding: 20px 0; }
 /* line 259, ../sass/main.scss */
+.basic-info .img { padding: 20px 0; }
+/* line 262, ../sass/main.scss */
 .basic-info .img img { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border: 10px solid #fff; }
-/* line 269, ../sass/main.scss */
+/* line 272, ../sass/main.scss */
 .basic-info .info { padding: 0 10px; }
-/* line 277, ../sass/main.scss */
+/* line 280, ../sass/main.scss */
 .basic-info ul { margin: 0; padding: 0 0 20px 0; list-style: none; }
-/* line 283, ../sass/main.scss */
+/* line 286, ../sass/main.scss */
 .basic-info .title { width: 150px; display: inline-block; }
 
-/* line 290, ../sass/main.scss */
+/* line 293, ../sass/main.scss */
 .data { padding: 20px; }
-/* line 292, ../sass/main.scss */
+/* line 295, ../sass/main.scss */
 .data .content { background: #fff; padding-bottom: 20px; }
 
-/* line 299, ../sass/main.scss */
+/* line 302, ../sass/main.scss */
 .maps { overflow: hidden; *zoom: 1; width: 100%; height: 300px; }
