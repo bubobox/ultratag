@@ -219,7 +219,6 @@ $(function(){
     function convertExifValue( tag ) {
         var values = tag.value();
 
-        console.log( tag,tag._group == 'GPS' && ( tag._id == 0x0002 || tag._id == 0x0004 ) );
         if( tag._group == 'GPS' && ( tag._id == 0x0002 || tag._id == 0x0004 ) )
             return values[0] + (values[1]/60) + (values[2]/3600);
 

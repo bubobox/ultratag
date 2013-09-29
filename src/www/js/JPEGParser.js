@@ -179,7 +179,7 @@ JPEGParser.prototype = {
 				first_data = this._read32( data, i, big_endian ),
 
 				parse = function( data, start, headerOffset, length, result, group ) {
-					var count = self._read16( data, i, big_endian );
+					var count = self._read16( data, start, big_endian );
 					start += 2;
 
 					return readTags( data, start, headerOffset, count, result || [], group );
@@ -191,7 +191,6 @@ JPEGParser.prototype = {
 					for( j=0; j<count; j++ ) {
 
 						tag = readTag( data, start, headerOffset );
-
 						t = new EXIFTag( tag.id, tag.type, tag.components, tag.value, group || 'Exif' );
 						result.push( t );
 
@@ -206,7 +205,8 @@ JPEGParser.prototype = {
 						 * ExifOffset
 						 */
 						if( t._id == 0x8769 ) {
-							parse( data, headerOffset+t.value(), headerOffset, length-t.value, result, 'Exif' );
+							var offset = t.value();
+							parse( data, headerOffset+offset, headerOffset, length-offset, result, 'Exif' );
 						}
 
 						start += 12;
@@ -247,7 +247,7 @@ JPEGParser.prototype = {
 						tag.valueOffset = self._read32( data, start, big_endian );
 						start += 4;
 
-						tag.value = self._readBytes( data, headerOffset+tag.valueOffset, tag.length, false );
+						//tag.value = self._readBytes( data, headerOffset+tag.valueOffset, tag.length, false );
 					}
 
 					return tag;

@@ -1,10 +1,6 @@
 var EXIFTag = function( id, type, components, value, group ) {
 	this._id = id;
 	this.key = EXIFKeys[ group ][ id ];
-	if( group == 'GPS' && id == 0x0002 ) {
-		console.log( 'type', type );
-		console.log( 'lat ', value );
-	}
 	this._components = components;
 	this._group = group;
 	this._type = type;

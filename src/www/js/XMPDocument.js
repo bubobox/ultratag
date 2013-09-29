@@ -18,8 +18,6 @@ XMPDocument.prototype = {
 		key = key || null;
 		element = this.fetchElement(tag);
 
-		console.log( element );
-
 		if( ! element) {
 			return {};
 		}
