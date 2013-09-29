@@ -136,65 +136,91 @@ JPEGParser.prototype = {
 		 * @return Object 		Key-value pairs of data
 		 */
 		exif: function( data, start, length ) {
-			var i = 6 + 2 + 2, // Exif\0\0 + MM + TIFF header
-				initial_byte = start+6, // Header start
-				first_data = ( data[start+i++] << 24 ) +
-					( data[start+i++] << 16 ) +
-					( data[start+i++] << 8 ) +
-					data[start+i++],
-				initial_data = initial_byte + first_data;
+			var initial_byte = start+6,
+				i = initial_byte + 2 + 2, // MM + TIFF Header
+				first_data = ( data[i++] << 24 ) +
+							( data[i++] << 16 ) +
+							( data[i++] << 8 ) +
+							data[i++];
 
-				count = ( data[initial_data] << 8 ) + data[initial_data+1];
+				parse = function( data, start, headerOffset, length, result, group ) {
+					var count = ( data[start++] << 8 ) + data[start++];
 
-				i = initial_data+2,
-				j = 0,
-				x = 0,
-				tag = {},
-				result = [];
+					console.log( 'count',  count );
 
-			for( j=0; j<count; j++ ) {
-				tag = {
-					id: ( data[i++] << 8 ) + data[i++],
-					type: ( data[i++] << 8 ) + data[i++],
-					components: ( data[i++] << 24 ) +
-						( data[i++] << 16 ) +
-						( data[i++] << 8 ) +
-						data[i++],
-					valueOffset: 0,
-					value: []
-				};
+					return readTags( data, start, headerOffset, count, result || [], group );
+				},
 
-				if( tag.type == 3 )
-					tag.components *= 2;
+				readTags = function( data, start, headerOffset, count, result, group ) {
+					var j = 0;
 
-				if( tag.type == 4 )
-					tag.components *= 4;
+					for( j=0; j<count; j++ ) {
 
-				if( tag.type == 5 )
-					tag.components *= 8;
+						tag = readTag( data, start, headerOffset );
 
-				// Values could be embeded where we would expect the offset to be.
-				if( tag.components <= 4 ) {
-					tag.value.push( data[i++] );
-					tag.value.push( data[i++] );
-					tag.value.push( data[i++] );
-					tag.value.push( data[i++] );
-				} else {
-					tag.valueOffset = ( data[i++] << 24 ) +
-						( data[i++] << 16 ) +
-						( data[i++] << 8 ) +
-						data[i++];
+						t = new EXIFTag( tag.id, tag.type, tag.components, tag.value, group || 'Exif' );
+						result.push( t );
 
-					for( x=0; x<tag.components; x++ ) {
-						tag.value.push( data[initial_byte+tag.valueOffset+x]);
+						/**
+						 * GPS Tags
+						 */
+						if( t._id == 0x8825 ) {
+							parse( data, headerOffset+t.value(), headerOffset, length-t.value, result, 'GPS' );
+						}
+
+						start += 12;
 					}
+
+					return result;
+				},
+
+				readTag = function( data, start, headerOffset ) {
+					var x = null,
+						tag = {
+							id: ( data[start++] << 8 ) + data[start++],
+							type: ( data[start++] << 8 ) + data[start++],
+							components: ( data[start++] << 24 ) +
+								( data[start++] << 16 ) +
+								( data[start++] << 8 ) +
+								data[start++],
+							length: 0,
+							valueOffset: 0,
+							value: []
+						};
+
+					tag.length = tag.components;
+
+					if( tag.type == 3 )
+						tag.length *= 2;
+
+					if( tag.type == 4 )
+						tag.length *= 4;
+
+					if( tag.type == 5 ) {
+						tag.length *= 8;
+					}
+
+					// Values could be embeded where we would expect the offset to be.
+					if( tag.length <= 4 ) {
+						tag.value.push( data[start++] );
+						tag.value.push( data[start++] );
+						tag.value.push( data[start++] );
+						tag.value.push( data[start++] );
+					} else {
+						tag.valueOffset = ( data[start++] << 24 ) +
+							( data[start++] << 16 ) +
+							( data[start++] << 8 ) +
+							data[start++];
+
+						for( x=0; x<tag.length; x++ ) {
+							tag.value.push( data[headerOffset+tag.valueOffset+x]);
+						}
+					}
+
+					return tag;
 				}
 
-				
-				result.push( new EXIFTag( tag.id, tag.type, tag.value ) );
-			}
-
-			return result;
+			return parse( data, initial_byte+first_data, initial_byte, length-( initial_byte - start ) );
 		}
 	}
 

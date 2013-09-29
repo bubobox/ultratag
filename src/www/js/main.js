@@ -134,11 +134,29 @@ $(function(){
 
     function createExifTable(data)
     {
-        var html = '';
+        var html = '',
+            val = null;
         for(var idx in data) {
-            html += '<tr><td>' + data[idx].key + '</td><td>' + data[idx].value() + '</td></tr>';
+            val = data[idx].value();
+            if( Object.prototype.toString.call( val ) === '[object Array]' )
+                val = convertExifValue( data[idx] );
+
+            html += '<tr><td>' + data[idx].key + '</td><td>' + val + '</td></tr>';
         }
         return '<table width="100%"><tbody>' + html + '</tbody></table>';
+    }
+
+    function convertExifValue( tag ) {
+        var values = tag.value();
+
+        console.log( tag,tag._group == 'GPS' && ( tag._id == 0x0002 || tag._id == 0x0004 ) );
+        if( tag._group == 'GPS' && ( tag._id == 0x0002 || tag._id == 0x0004 ) )
+            return values[0] + (values[1]/60) + (values[2]/3600);
+
+        if( values.length > 0 )
+            return values.join( ', ' );
+
+        return tag.value();
     }
 
     function createXmpTable(data)
@@ -159,13 +177,13 @@ $(function(){
         $('.select-helper span').html($(this).find('option:selected').html());
     });
 
+    var map = null;
     function initMaps() {
         // Disable initialization
         initMaps = function() {};
 
         // MAPS
         if( !isMobile.any() ) {
-            var map;
             function initialize() {
                 var mapOptions = {
                     zoom: 8,

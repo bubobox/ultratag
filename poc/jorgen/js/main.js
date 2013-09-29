@@ -53,8 +53,8 @@
 		});
 		parser.on( 'exif', function( data ) {
 			var i = 0;
-			//for( i in data )
-				//console.log( data[i].key, data[i].value() );
+			for( i in data )
+				console.error( data[i].key, data[i].value() );
 		})
 
 		parser.parse( data );
