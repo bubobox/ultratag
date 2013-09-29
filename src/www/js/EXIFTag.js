@@ -23,11 +23,37 @@ EXIFTag.prototype = {
 		return this._toInt( start, 4 );
 	},
 
+	_signedShort: function( start ) {
+		return this._toSignedInt( start, 2 );
+	},
+
+	_signedLong: function( start ) {
+		return this._toSignedInt( start, 4 );
+	},
+
+	_toSignedInt: function( start, count ) {
+		var result = 0,
+			i = start,
+			sign = 1;
+
+		// Most significant bit indicates sign.
+		result = this._value[i++];
+		if( (result & 0xFF) >> 7 == 1 )
+			sign = -1;
+
+		// Strip sign bit from value.
+		result = result & 0x7F;
+		count--;
+
+		while( count-- > 0 )
+			result = ( result << 8 ) + this._value[i++];
+		
+		return result * sign;
+	},
+
 	_toInt: function( start, count ) {
 		var result = 0,
 			i = start;
-
-		console.log( count );
 
 		while( count-- > 0 )
 			result = ( result << 8 ) + this._value[i++];
@@ -66,12 +92,8 @@ EXIFTag.prototype = {
 
 				values.push( val );
 			} else if( this._type == 8 ) {
-				val = this._short( i );
+				val = this._signedShort( i );
 				i += 2;
-
-				var sign = ( ( val & 0xFFFF ) >> 15 ) == 1 ? -1 : 1;
-
-				val = ( val & 0x7FFF ) * sign;
 
 				values.push( val );
 			} else {
