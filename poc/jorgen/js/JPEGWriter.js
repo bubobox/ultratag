@@ -31,12 +31,14 @@ JPEGWriter.prototype.parse = function( data ) {
 				continue;
 			}
 
+			skip = ( data[i+1] << 8 ) + data[i+2];
+
 			result = this.trigger( 'marker', b, data, i+3, skip-2 );
 			
 			if( !result )
 				result = data.subarray( i+3, i+skip+1 );
 
-			skip = result.length;
+			skip = result.length + 2;
 			arr = new Uint8Array( skip );
 			arr[0] = ( skip >> 8 ) & 0xFF;
 			arr[1] = skip & 0xFF;		
