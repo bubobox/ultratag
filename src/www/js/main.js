@@ -118,7 +118,7 @@ $(function(){
          * Trigger google analytics event
          */
         _gaq = _gaq || [];
-        _gaq.push( '_trackEvent', 'actions', 'inspect' );
+        _gaq.push(['_trackEvent', 'actions', 'inspect']);
 
         // Check if file is valid
         if( ! isValidImage(file)) {
