@@ -114,6 +114,11 @@ $(function(){
     };
 
     function useFile(file) {
+        /**
+         * Trigger google analytics event
+         */
+        _gaq = _gaq || [];
+        _gaq.push( '_trackEvent', 'actions', 'inspect' );
 
         // Check if file is valid
         if( ! isValidImage(file)) {
