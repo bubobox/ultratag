@@ -49,7 +49,7 @@ EXIFTag.prototype = {
 
 				values.push( numerator / denumerator );
 			} else {
-				throw 'Not supported, sorry';
+				//throw 'Not supported, sorry';
 			}
 		}
 

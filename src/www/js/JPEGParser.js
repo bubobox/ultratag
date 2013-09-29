@@ -127,6 +127,42 @@ JPEGParser.prototype = {
 			return new XMPDocument(domDocument);
 		},
 
+		_read: function( data, start, count, big_endian ) {
+			var v = this._readBytes( data, start, count, big_endian ),
+				result = 0,
+				i = 0;
+
+			for( i in v ) {
+				result = ( result << 8 ) + v[i];
+			}
+
+			return result;
+		},
+
+		_read32: function( data, start, big_endian ) {
+			return this._read( data, start, 4, big_endian );
+		},
+
+		_read16: function( data, start, big_endian ) {
+			return this._read( data, start, 2, big_endian );
+		},
+
+		_read8: function( data, start, big_endian ) {
+			return data[start];
+		},
+
+		_readBytes: function( data, start, count, big_endian ) {
+			var v = [];
+
+			while( count-- )
+				v.push( data[start++] );
+
+			if( big_endian )
+				v.reverse();
+
+			return v;
+		},
+
 		/**
 		 * Parses Exif data
 		 * 
@@ -136,15 +172,15 @@ JPEGParser.prototype = {
 		 * @return Object 		Key-value pairs of data
 		 */
 		exif: function( data, start, length ) {
-			var initial_byte = start+6,
+			var self = this,
+				initial_byte = start+6,
+				big_endian = data[initial_byte] == 0x49,
 				i = initial_byte + 2 + 2, // MM + TIFF Header
-				first_data = ( data[i++] << 24 ) +
-							( data[i++] << 16 ) +
-							( data[i++] << 8 ) +
-							data[i++];
+				first_data = this._read32( data, i, big_endian ),
 
 				parse = function( data, start, headerOffset, length, result, group ) {
-					var count = ( data[start++] << 8 ) + data[start++];
+					var count = self._read16( data, i, big_endian );
+					start += 2;
 
 					console.log( 'count',  count );
 
@@ -175,18 +211,16 @@ JPEGParser.prototype = {
 				},
 
 				readTag = function( data, start, headerOffset ) {
-					var x = null,
-						tag = {
-							id: ( data[start++] << 8 ) + data[start++],
-							type: ( data[start++] << 8 ) + data[start++],
-							components: ( data[start++] << 24 ) +
-								( data[start++] << 16 ) +
-								( data[start++] << 8 ) +
-								data[start++],
+					var tag = {
+							id: self._read16( data, start, big_endian),
+							type: self._read16( data, start+2, big_endian),
+							components: self._read32( data, start+4, big_endian),
 							length: 0,
 							valueOffset: 0,
 							value: []
 						};
+
+					start += 8;
 
 					tag.length = tag.components;
 
@@ -202,23 +236,21 @@ JPEGParser.prototype = {
 
 					// Values could be embeded where we would expect the offset to be.
 					if( tag.length <= 4 ) {
-						tag.value.push( data[start++] );
-						tag.value.push( data[start++] );
-						tag.value.push( data[start++] );
-						tag.value.push( data[start++] );
+						tag.value = self._readBytes( data, start, 4, big_endian );
+						console.log( tag.value );
+						start += 4;
 					} else {
-						tag.valueOffset = ( data[start++] << 24 ) +
-							( data[start++] << 16 ) +
-							( data[start++] << 8 ) +
-							data[start++];
+						tag.valueOffset = self._read32( data, start, big_endian );
+						start += 4;
 
-						for( x=0; x<tag.length; x++ ) {
-							tag.value.push( data[headerOffset+tag.valueOffset+x]);
-						}
+						tag.value = self._readBytes( data, headerOffset+tag.valueOffset, tag.length, big_endian );
 					}
 
 					return tag;
 				}
+
+			i += 4; // count
+			console.log( first_data );
 
 			return parse( data, initial_byte+first_data, initial_byte, length-( initial_byte - start ) );
 		}

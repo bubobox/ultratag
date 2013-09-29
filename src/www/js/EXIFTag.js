@@ -49,7 +49,8 @@ EXIFTag.prototype = {
 
 				values.push( numerator / denumerator );
 			} else {
-				throw 'Not supported, sorry';
+				console.warn('not supported type', this._type);
+				return null;
 			}
 		}
 
