@@ -76,6 +76,6 @@
 		});
 
 		document.getElementsByTagName('div')[0].innerHTML =
-			'<a href="' + writer.parse( data ) + '">click here to download</a>';
+			'<a download="image.jpeg" href="' + writer.parse( data ) + '">click here to download</a>';
 	};
 }());
