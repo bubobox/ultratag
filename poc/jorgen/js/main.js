@@ -6,11 +6,13 @@
 		var files = e.dataTransfer.files,
 			count = files.length;
 
-		for( i=0; i<count;i++ )
-			console.log( files[i] );
+		//for( i=0; i<count;i++ )
+			//console.log( files[i] );
 
 		e.preventDefault();
 		e.cancel = true;
+
+		window.f = files[0];
 
 		readFile( files[0] );
 	});
@@ -45,16 +47,43 @@
 				name: 'Jef',
 				age: 28
 			});
-			
+
 			// Get example 
 			//data.get('user')
 		});
 		parser.on( 'exif', function( data ) {
 			var i = 0;
-			for( i in data )
-				console.log( data[i].key, data[i].value() );
+			//for( i in data )
+				//console.log( data[i].key, data[i].value() );
 		})
 
 		parser.parse( data );
+
+		var writer = new JPEGWriter();
+
+		writer.on( 'xmp', function( doc ) {
+			doc.set('test', 'Hello');
+
+			console.log( doc._document );
+
+			//var xml = (new XMLSerializer()).serializeToString(doc._document);
+
+			//console.log( (new DOMParser()).parseFromString( xml, 'text/xml' ) );
+
+			//xml = 'http://ns.adobe.com/xap/1.0/' + xml;
+
+			//console.log( 'xml', xml );
+
+			return;
+			var buf = new Uint8Array( xml.length );
+			for( i=0; i<xml.length; i++ ) {
+				buf[i] = xml.charCodeAt(i);
+			}
+
+			return buf;
+		});
+
+		document.getElementsByTagName('div')[0].innerHTML =
+			'<a href="' + writer.parse( data ) + '">click here to download</a>';
 	};
 }());
