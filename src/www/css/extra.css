@@ -44,3 +44,10 @@ table td {
 #upload {
 	margin-left: -155px;
 }
+
+@media screen and (max-width: 678px) {
+	.footer-main {
+		min-height: 60px;
+		height: auto;
+	}
+}
