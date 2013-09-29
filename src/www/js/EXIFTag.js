@@ -102,8 +102,6 @@ EXIFTag.prototype = {
 				var denumerator = this._signedLong( i+4 );
 				i += 8;
 
-				console.log( numerator, denumerator );
-
 				values.push( numerator / denumerator );
 			} else {
 				console.warn('not supported type', this._type);

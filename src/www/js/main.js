@@ -142,6 +142,7 @@ $(function(){
         $('.tab').hide().eq(0).show()
 
         // Set file as preview
+        window.URL = window.URL || window.webkitURL;
         var data = URL.createObjectURL(file);
         document.getElementById('preview').src = data;
 
