@@ -232,12 +232,11 @@ JPEGParser.prototype = {
 					if( tag.type == 3 )
 						tag.length *= 2;
 
-					if( tag.type == 4 )
+					if( tag.type == 4 || tag.type == 9 )
 						tag.length *= 4;
 
-					if( tag.type == 5 ) {
+					if( tag.type == 5 || tag.type == 10 )
 						tag.length *= 8;
-					}
 
 					// Values could be embeded where we would expect the offset to be.
 					if( tag.length <= 4 ) {

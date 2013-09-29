@@ -66,7 +66,7 @@ EXIFTag.prototype = {
 		for( j=0; j<this._components; j++ ) {
 			if( this._type == 1 ) {
 				values.push( this._value[i++] );
-			} else if( this._type == 2 ) {
+			} else if( this._type == 2 || this._type == 7 ) {
 				return this._value.map(function(c){return String.fromCharCode(c);}).join('');
 			} else if( this._type == 3 ) {
 				values.push( this._short( i ) );
@@ -78,8 +78,6 @@ EXIFTag.prototype = {
 				var numerator = this._long( i );
 				var denumerator = this._long( i+4 );
 				i += 8;
-				console.log( numerator, denumerator );
-				console.log( this._value );
 
 				values.push( numerator / denumerator );
 			} else if( this._type == 6 ) {
@@ -94,6 +92,19 @@ EXIFTag.prototype = {
 				i += 2;
 
 				values.push( val );
+			} else if( this._type == 9 ) {
+				val = this._signedLong( i );
+				i += 4;
+
+				values.push( val );
+			} else if( this._type == 10 ) {
+				var numerator = this._signedLong( i );
+				var denumerator = this._signedLong( i+4 );
+				i += 8;
+
+				console.log( numerator, denumerator );
+
+				values.push( numerator / denumerator );
 			} else {
 				console.warn('not supported type', this._type);
 				return null;
@@ -101,7 +112,7 @@ EXIFTag.prototype = {
 		}
 
 		if( isNaN( values[0] ) )
-			console.log( 'nan', this );
+			console.log( 'isNaN', this._type, values );
 
 		if( values.length == 1 )
 			return values.pop();
