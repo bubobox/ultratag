@@ -202,6 +202,13 @@ JPEGParser.prototype = {
 							parse( data, headerOffset+t.value(), headerOffset, length-t.value, result, 'GPS' );
 						}
 
+						/**
+						 * ExifOffset
+						 */
+						if( t._id == 0x8769 ) {
+							parse( data, headerOffset+t.value(), headerOffset, length-t.value, result, 'Exif' );
+						}
+
 						start += 12;
 					}
 
