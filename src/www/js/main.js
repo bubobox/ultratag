@@ -147,8 +147,6 @@ $(function(){
 
         // Add basic info about file
         $('.info #name').html(file.name);
-        $('.info #width').html(file.width);
-        $('.info #height').html(file.height);
         $('.info #size').html(file.size);
         $('.info #modified').html(file.lastModifiedDate);
         $('.info #mime').html(file.type);
@@ -208,6 +206,13 @@ $(function(){
             }
             if(data[idx].key == 'GPSLongitude') {
                 lng = val;
+            }
+
+            if(data[idx].key == 'ImageWidth' || data[idx].key == 'ExifImageWidth') {
+                $('.info #width').html(val + 'px');
+            }
+            if(data[idx].key == 'ImageHeight' || data[idx].key == 'ExifImageHeight') {
+                $('.info #height').html(val + 'px');
             }
 
             html += '<tr><td>' + data[idx].key + '</td><td>' + val + '</td></tr>';
