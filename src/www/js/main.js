@@ -76,10 +76,14 @@ $(function(){
         data = new Uint8Array( data );
         var parser = new JPEGParser();
         parser.on( 'xmp', function( data, start, length ) {
-            console.error('---', data, data.get());
+            var table = createXmpTable( data.get() );
+            $('.xmp .table-wrapper.ultratag').html( table );
+
+            table = createXmpTable( data.get( null, 'rdf:Description' ) );
+            $('.xmp .table-wrapper.other').html( table );
         });
         parser.on( 'exif', function( data ) {
-            var table = createTable(data);
+            var table = createExifTable(data);
             $('.exif .table-wrapper').html(table);
         })
         parser.parse( data );
@@ -97,6 +101,8 @@ $(function(){
         $('.info #size').html(file.size);
         $('.info #modified').html(file.lastModifiedDate);
         $('.info #mime').html(file.type);
+
+        initMaps();
     }
 
     // Bind triggers for tabs
@@ -120,11 +126,20 @@ $(function(){
         active: 'active' // String: Set the "active" class
     });
 
-    function createTable(data)
+    function createExifTable(data)
     {
         var html = '';
         for(var idx in data) {
             html += '<tr><td>' + data[idx].key + '</td><td>' + data[idx].value() + '</td></tr>';
+        }
+        return '<table width="100%"><tbody>' + html + '</tbody></table>';
+    }
+
+    function createXmpTable(data)
+    {
+        var html = '';
+        for(var idx in data) {
+            html += '<tr><td>' + idx + '</td><td>' + data[idx] + '</td></tr>';
         }
         return '<table width="100%"><tbody>' + html + '</tbody></table>';
     }
@@ -138,24 +153,28 @@ $(function(){
         $('.select-helper span').html($(this).find('option:selected').html());
     });
 
-    // MAPS
-    if( !isMobile.any() ) {
-        var map;
-        function initialize() {
-            var mapOptions = {
-                zoom: 8,
-                center: new google.maps.LatLng(-34.397, 150.644),
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            map = new google.maps.Map(document.getElementById('map-canvas'),
-                mapOptions);
+    function initMaps() {
+        // Disable initialization
+        initMaps = function() {};
+
+        // MAPS
+        if( !isMobile.any() ) {
+            var map;
+            function initialize() {
+                var mapOptions = {
+                    zoom: 8,
+                    center: new google.maps.LatLng(-34.397, 150.644),
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+            }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+        } else {
+            var key = 'AIzaSyCqPHHjPX1c7bDnZ8z318Yvj7DlCKeq9SU';
+            var image = '<img class="static-map" src="http://maps.googleapis.com/maps/api/staticmap?center=New+York,NY&zoom=13&size=600x400&key='+key+'&sensor=false">';
+            $('.maps').append(image);
         }
-
-        google.maps.event.addDomListener(window, 'load', initialize);
-    } else {
-        var key = 'AIzaSyCqPHHjPX1c7bDnZ8z318Yvj7DlCKeq9SU';
-        var image = '<img class="static-map" src="http://maps.googleapis.com/maps/api/staticmap?center=New+York,NY&zoom=13&size=600x400&key='+key+'&sensor=false">';
-        $('.maps').append(image);
     }
-
 });
