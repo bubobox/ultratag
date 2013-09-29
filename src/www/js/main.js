@@ -242,4 +242,11 @@ $(function(){
             $('.maps').append(image);
         }
     }
+
+
+    // If on mobile scroll to first pixel
+    if(isMobile.any()) {
+        window.scrollTo(0, 1); 
+    }
+
 });
