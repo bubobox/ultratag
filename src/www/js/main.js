@@ -33,6 +33,7 @@ $(function(){
     $(document).on('dragover', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        view('landing');
         var dt = e.originalEvent.dataTransfer;
         if(dt.types != null && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('application/x-moz-file'))) {
             $(".drag-drop").addClass('visible');
@@ -53,28 +54,14 @@ $(function(){
         $(".drag-drop").removeClass('visible');
         if(e.originalEvent.dataTransfer){
             var file = e.originalEvent.dataTransfer.files[0];
-
-            if(file.type !== 'image/jpeg') {
-                alert('For the moment we only support jpeg images.');
-            }
-
-            readFile(file);
+            useFile(file);
         }
     });
 
     document.getElementById("file-upload").addEventListener("change", handleFiles, false);
     function handleFiles() {
         var file = this.files[0];
-        readFile(file);
-    }
-
-    function readFile( file ) {
-        var reader = new FileReader();
         useFile(file);
-        reader.onloadend = function( e ) {
-            parseData( e.currentTarget.result );
-        }
-        reader.readAsArrayBuffer( file );
     }
 
     function parseData( data ) {
@@ -120,6 +107,22 @@ $(function(){
     };
 
     function useFile(file) {
+
+        // Check if file is valid
+        if( ! isValidImage(file)) {
+            $('#upload .large').addClass('shake');
+            setTimeout(function() {
+                $('#upload .large').removeClass('shake');
+            }, 1000);
+            return;
+        }
+
+        // Start reading file
+        var reader = new FileReader();
+        reader.onloadend = function( e ) {
+            parseData( e.currentTarget.result );
+        }
+        reader.readAsArrayBuffer( file );
 
         // Only show first tab
         $('.tab').hide().eq(0).show()
@@ -196,6 +199,18 @@ $(function(){
         e.preventDefault();
         $('.select-helper span').html($(this).find('option:selected').html());
     });
+
+    /**
+     * Check if we support the select file object
+     */
+    function isValidImage(file)
+    {
+        if(file.type === "image/jpeg" || file.type === "image/jpg") {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     function initMaps() {
         // Disable initialization
