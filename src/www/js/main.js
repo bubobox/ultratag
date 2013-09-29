@@ -98,6 +98,16 @@ $(function(){
 
             table = createXmpTable( data.get( null, 'rdf:Description' ) );
             $('.xmp .table-wrapper.other').html( table );
+
+            // Create Tinynav for mobile
+            /*$(".tabs").tinyNav({
+                active: 'active' // String: Set the "active" class
+            });
+            $('#tinynav1').on('change', function() {
+                var value = $(this).val();
+                window.sel = $(this);
+                console.error('select', $(this), value);
+            });*/
         });
         parser.on( 'exif', function( data ) {
             var table = createExifTable(data);
@@ -145,8 +155,12 @@ $(function(){
 
     // Bind triggers for tabs
     $('body').on('click', '[data-trigger=tab]', function() {
-        console.error('clikc');
         tab($(this).data('tab'));
+    });
+
+    $('#tinynav1').on('change', function() {
+        var value = $(this).val();
+        tab(value);
     });
 
     function tab(idx) {
@@ -160,16 +174,12 @@ $(function(){
         $('.' + name).show();
     }
 
-    // Tinynav 
-    $(".tabs").tinyNav({
-        active: 'active' // String: Set the "active" class
-    });
-
     function createTab(name, title, content) {
         var lastIndex = parseInt($('#tabs ul li').last().data('tab'));
         var newIndex = lastIndex + 1;
         var content = $('<div id="tab' + newIndex + '" class="xmp tab col col-9 content"><h2>' + title + '</h2>' + content + '</div>').hide();
-        $('#tabs ul').append('<li data-trigger="tab" data-tab="' + newIndex + '"><a href="javascript:void(0)">' + name + '</a></li>');
+        $('#tabs ul').append('<li data-trigger="tab" data-tab="' + newIndex + '" data-name="' + name + '"><a href="javascript:void(0)">' + name + '</a></li>');
+        $('#tabs #tinynav1').append('<option value="' + newIndex + '">' + name + '</option>');
         $('#tabs').parent().append(content);
     }
 
