@@ -181,9 +181,7 @@ JPEGParser.prototype = {
 				parse = function( data, start, headerOffset, length, result, group ) {
 					var count = self._read16( data, i, big_endian );
 					start += 2;
-
-					console.log( 'count',  count );
-
+					
 					return readTags( data, start, headerOffset, count, result || [], group );
 				},
 
@@ -237,7 +235,6 @@ JPEGParser.prototype = {
 					// Values could be embeded where we would expect the offset to be.
 					if( tag.length <= 4 ) {
 						tag.value = self._readBytes( data, start, 4, big_endian );
-						console.log( tag.value );
 						start += 4;
 					} else {
 						tag.valueOffset = self._read32( data, start, big_endian );
@@ -250,7 +247,6 @@ JPEGParser.prototype = {
 				}
 
 			i += 4; // count
-			console.log( first_data );
 
 			return parse( data, initial_byte+first_data, initial_byte, length-( initial_byte - start ) );
 		}
