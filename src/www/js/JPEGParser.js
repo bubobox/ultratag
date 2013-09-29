@@ -182,8 +182,6 @@ JPEGParser.prototype = {
 					var count = self._read16( data, i, big_endian );
 					start += 2;
 
-					console.log( 'count',  count );
-
 					return readTags( data, start, headerOffset, count, result || [], group );
 				},
 
@@ -202,6 +200,13 @@ JPEGParser.prototype = {
 						 */
 						if( t._id == 0x8825 ) {
 							parse( data, headerOffset+t.value(), headerOffset, length-t.value, result, 'GPS' );
+						}
+
+						/**
+						 * ExifOffset
+						 */
+						if( t._id == 0x8769 ) {
+							parse( data, headerOffset+t.value(), headerOffset, length-t.value, result, 'Exif' );
 						}
 
 						start += 12;
@@ -237,20 +242,18 @@ JPEGParser.prototype = {
 					// Values could be embeded where we would expect the offset to be.
 					if( tag.length <= 4 ) {
 						tag.value = self._readBytes( data, start, 4, big_endian );
-						console.log( tag.value );
 						start += 4;
 					} else {
 						tag.valueOffset = self._read32( data, start, big_endian );
 						start += 4;
 
-						tag.value = self._readBytes( data, headerOffset+tag.valueOffset, tag.length, big_endian );
+						tag.value = self._readBytes( data, headerOffset+tag.valueOffset, tag.length, false );
 					}
 
 					return tag;
 				}
 
 			i += 4; // count
-			console.log( first_data );
 
 			return parse( data, initial_byte+first_data, initial_byte, length-( initial_byte - start ) );
 		}
