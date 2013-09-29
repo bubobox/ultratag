@@ -15,6 +15,26 @@ EXIFTag.prototype = {
 	
 	key: null,
 
+	_short: function( start ) {
+		return this._toInt( start, 2 );
+	},
+
+	_long: function( start ) {
+		return this._toInt( start, 4 );
+	},
+
+	_toInt: function( start, count ) {
+		var result = 0,
+			i = start;
+
+		console.log( count );
+
+		while( count-- > 0 )
+			result = ( result << 8 ) + this._value[i++];
+		
+		return result;
+	},
+
 	value: function() {
 		var i = 0,
 			j = 0,
@@ -27,27 +47,33 @@ EXIFTag.prototype = {
 			} else if( this._type == 2 ) {
 				return this._value.map(function(c){return String.fromCharCode(c);}).join('');
 			} else if( this._type == 3 ) {
-				val = ( this._value[i++] << 8 ) + this._value[i++];
-				values.push( val );
+				values.push( this._short( i ) );
+				i += 2;
 			} else if( this._type == 4 ) {
-				val = ( this._value[i++] << 24 ) +
-					( this._value[i++] << 16 ) +
-					( this._value[i++] << 8 ) +
-					this._value[i++];
-
-				values.push( val );
+				values.push( this._long( i ) );
+				i += 4;
 			} else if( this._type == 5 ) {
-				var numerator = ( this._value[i++] << 24 ) +
-					( this._value[i++] << 16 ) +
-					( this._value[i++] << 8 ) +
-					this._value[i++];
-
-				var denumerator = ( this._value[i++] << 24 ) +
-					( this._value[i++] << 16 ) +
-					( this._value[i++] << 8 ) +
-					this._value[i++];
+				var numerator = this._long( i );
+				var denumerator = this._long( i+4 );
+				i += 8;
 
 				values.push( numerator / denumerator );
+			} else if( this._type == 6 ) {
+				val = this._value[i++];
+				var sign = ( ( val & 0xFF ) >> 7 ) == 1 ? -1 : 1;
+
+				val = ( val & 0x7F ) * sign;
+
+				values.push( val );
+			} else if( this._type == 8 ) {
+				val = this._short( i );
+				i += 2;
+
+				var sign = ( ( val & 0xFFFF ) >> 15 ) == 1 ? -1 : 1;
+
+				val = ( val & 0x7FFF ) * sign;
+
+				values.push( val );
 			} else {
 				console.warn('not supported type', this._type);
 				return null;
