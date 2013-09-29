@@ -51,7 +51,7 @@ EXIFTag.prototype = {
 		var result = 0,
 			i = start;
 
-		while( count-- > 0 )
+		while( count-- )
 			result = ( result << 8 ) + this._value[i++];
 		
 		return result;
@@ -78,6 +78,8 @@ EXIFTag.prototype = {
 				var numerator = this._long( i );
 				var denumerator = this._long( i+4 );
 				i += 8;
+				console.log( numerator, denumerator );
+				console.log( this._value );
 
 				values.push( numerator / denumerator );
 			} else if( this._type == 6 ) {
@@ -97,6 +99,9 @@ EXIFTag.prototype = {
 				return null;
 			}
 		}
+
+		if( isNaN( values[0] ) )
+			console.log( 'nan', this );
 
 		if( values.length == 1 )
 			return values.pop();

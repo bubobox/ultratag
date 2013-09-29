@@ -247,7 +247,7 @@ JPEGParser.prototype = {
 						tag.valueOffset = self._read32( data, start, big_endian );
 						start += 4;
 
-						//tag.value = self._readBytes( data, headerOffset+tag.valueOffset, tag.length, false );
+						tag.value = self._readBytes( data, headerOffset+tag.valueOffset, tag.length, false );
 					}
 
 					return tag;
