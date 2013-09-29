@@ -22,7 +22,7 @@
 
 	function readFile( file ) {
 		var reader = new FileReader();
-
+		
 		reader.onloadend = function( e ) {
 			parseData( e.currentTarget.result );
 		}
