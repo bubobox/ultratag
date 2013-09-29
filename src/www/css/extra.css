@@ -40,3 +40,7 @@ table td {
     animation: shake 0.5s infinite;
     -webkit-animation: shake 0.5s infinite;
 }
+
+#upload {
+	margin-left: -155px;
+}
