@@ -67,6 +67,7 @@ $(function(){
     function parseData( data ) {
         view('info');
         data = new Uint8Array( data );
+
         var parser = new JPEGParser();
         parser.on( 'xmp', function( data, start, length ) {
             var table = createXmpTable( data.get() );
@@ -98,20 +99,11 @@ $(function(){
 
             table = createXmpTable( data.get( null, 'rdf:Description' ) );
             $('.xmp .table-wrapper.other').html( table );
-
-            // Create Tinynav for mobile
-            /*$(".tabs").tinyNav({
-                active: 'active' // String: Set the "active" class
-            });
-            $('#tinynav1').on('change', function() {
-                var value = $(this).val();
-                window.sel = $(this);
-                console.error('select', $(this), value);
-            });*/
         });
         parser.on( 'exif', function( data ) {
+
             var table = createExifTable(data);
-            $('.exif .table-wrapper').html(table);
+            createTab('EXIF', 'EXIF', table);
         })
         parser.parse( data );
     };
@@ -140,15 +132,14 @@ $(function(){
         // Set file as preview
         var data = URL.createObjectURL(file);
         document.getElementById('preview').src = data;
-        console.log(file);
+
+        // Add basic info about file
         $('.info #name').html(file.name);
         $('.info #width').html(file.width);
         $('.info #height').html(file.height);
         $('.info #size').html(file.size);
         $('.info #modified').html(file.lastModifiedDate);
         $('.info #mime').html(file.type);
-
-        createTab('Hello world', 'This is a test', 'This is some cool html content');
 
         initMaps();
     }
@@ -175,12 +166,17 @@ $(function(){
     }
 
     function createTab(name, title, content) {
-        var lastIndex = parseInt($('#tabs ul li').last().data('tab'));
+        var lastIndex = parseInt($('#tabs ul li').last().data('tab')) || 0;
         var newIndex = lastIndex + 1;
         var content = $('<div id="tab' + newIndex + '" class="xmp tab col col-9 content"><h2>' + title + '</h2>' + content + '</div>').hide();
         $('#tabs ul').append('<li data-trigger="tab" data-tab="' + newIndex + '" data-name="' + name + '"><a href="javascript:void(0)">' + name + '</a></li>');
         $('#tabs #tinynav1').append('<option value="' + newIndex + '">' + name + '</option>');
         $('#tabs').parent().append(content);
+
+        // Auto activate first tab
+        if(lastIndex === 0) {
+            tab(newIndex);
+        }
     }
 
     function createExifTable(data)
