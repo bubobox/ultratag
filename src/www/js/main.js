@@ -1,35 +1,6 @@
 /*jslint vars: true, devel: true */
 /*global $: false */
 
-/*
-(function() {
-    var zone = document.querySelector( '.drag-drop' );
-
-    zone.addEventListener( 'drop', function( e ) {
-        var files = e.dataTransfer.files,
-            count = files.length;
-
-        for( i=0; i<count;i++ )
-            console.log( files[i] );
-
-        e.preventDefault();
-        e.cancel = true;
-
-        readFile( files[0] );
-    });
-
-    function readFile( file ) {
-        var reader = new FileReader();
-        console.error(file);
-        reader.onloadend = function( e ) {
-            //parseData( e.currentTarget.result );
-        }
-
-        reader.readAsArrayBuffer( file );
-    }
-
-}());*/
-
 // Mobile browser detection
 var isMobile = {
     Android: function() {
@@ -90,6 +61,12 @@ $(function(){
             readFile(file);
         }
     });
+
+    document.getElementById("file-upload").addEventListener("change", handleFiles, false);
+    function handleFiles() {
+        var file = this.files[0];
+        readFile(file);
+    }
 
     function readFile( file ) {
         var reader = new FileReader();
