@@ -1,0 +1,37 @@
+// GRID
+
+@for $i from 1 through 12 {
+    .col-#{$i} { 
+        width: (8.333333333% * $i); 
+        float: left;
+        display: block;
+    }
+    .offset-#{$i} {
+        margin-left: (8.333333333% * $i);
+    }
+}
+
+@media screen and(max-width: $breakpoint ) {
+	[class*='col-'] {
+	}
+	.col-1,
+	.col-2 {
+        width: (25%);
+	}
+	.col-3,
+	.col-4 {
+        width: (33.333333333%); 
+	}
+	.col-5,
+	.col-6 {
+		width: (50%);
+	}
+	.col-7,
+	.col-8,
+	.col-9,
+	.col-10,
+	.col-11,
+	.col-12 {
+		width: (100%);
+	}
+}

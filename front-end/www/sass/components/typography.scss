@@ -1,0 +1,113 @@
+// TYPOGRAPHY
+html {
+    font-family: $base-font-family;
+    font-size: $base-font-size;
+    line-height: $base-line-height;
+}
+
+body, input, textarea {
+    font-family: $base-font-family;
+    font-size: $base-font-size;
+    line-height: $base-line-height;
+    color: #5e6d7f;
+}
+
+h1, h1 a{
+    font-size: (16px * 2);
+    line-height: 110%;
+}
+h2, h2 a {
+    font-size: (16px * 1.5);
+}
+h3, h3 a {
+    font-size: (16px * 1.2);
+}
+h4, h4 a,
+h5, h5 a,
+h6, h6 a  {
+    font-size: (16px * 1);
+    margin: (16px * 1) 0;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    text-decoration: none;
+    border-bottom: 1px solid $primary;
+    &:hover, &:focus {
+        border-bottom: 1px solid darken($primary, 10%);
+    }
+}
+
+p {
+    margin: 0;
+    padding: 0px;
+    margin-bottom: 25px;
+    a {
+        margin-bottom: 0;
+        display: inline;
+    }
+}
+
+a {
+    font-weight: bold;
+    color: $primary;
+    border-bottom: 1px solid $primary;
+    text-decoration: none;
+    &:hover, &:focus {
+        color: darken($primary, 10%);
+        border-color: darken($primary, 10%);
+    }
+}
+
+ul,
+ol {
+    margin: 0;
+    padding: 0 0 0 20px;
+    ul,
+    ol {
+        margin: 0;
+    }
+}
+
+
+address {
+    font-style: normal;
+}
+
+hr {
+    margin: 10px 0;
+    border: none;
+    height: 1px;
+    margin-top: -1px;
+}
+
+.bold {
+    font-weight: $bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.line-through {
+    text-decoration: line-through;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
