@@ -97,6 +97,9 @@ $(function(){
 
     function useFile(file) {
 
+        // Only show first tab
+        $('.tab').hide().eq(0).show()
+
         // Set file as preview
         var data = URL.createObjectURL(file);
         document.getElementById('preview').src = data;
