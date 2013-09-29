@@ -62,6 +62,12 @@ $(function(){
         }
     });
 
+    document.getElementById("file-upload").addEventListener("change", handleFiles, false);
+    function handleFiles() {
+        var file = this.files[0];
+        readFile(file);
+    }
+
     function readFile( file ) {
         var reader = new FileReader();
         useFile(file);
