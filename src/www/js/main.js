@@ -29,7 +29,7 @@ $(function(){
     // Show the dropzone when dragging files (not folders or page
     // elements). The dropzone is hidden after a timer to prevent 
     // flickering to occur as `dragleave` is fired constantly.
-    var dragTimer, lat = null, lng = null;
+    var dragTimer, lat = null, lng = null, map = null;
     $(document).on('dragover', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -105,6 +105,10 @@ $(function(){
             var table = createExifTable(data);
             createTab('EXIF', 'EXIF', table);
 
+            if(lat && lng) {
+                createTab('Map', 'Map', '<div id="map-canvas" class="maps"></div>');
+            }
+
         })
         parser.parse( data );
     };
@@ -122,6 +126,10 @@ $(function(){
 
         // Clean tabs
         $('#tabs ul li,.tab').remove();
+
+        // Reset map instance
+        lat = lng = map = null;
+
 
         // Start reading file
         var reader = new FileReader();
@@ -205,10 +213,6 @@ $(function(){
             html += '<tr><td>' + data[idx].key + '</td><td>' + val + '</td></tr>';
         }
 
-        if(lat && lng) {
-            createTab('Map', 'Map', '<div id="map-canvas" class="maps"></div>');
-        }
-
         return '<table width="100%"><tbody>' + html + '</tbody></table>';
     }
 
@@ -257,10 +261,11 @@ $(function(){
 
     
     function initMaps(lat, lng) {
-        var map = null;
 
         // Disable initialization
-        initMaps = function() { return map };
+        if(map) {
+            return map;
+        }
 
         // MAPS
         //if( !isMobile.any() ) {
